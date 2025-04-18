@@ -1,0 +1,24 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <h2>User Registration</h2>
+    <form action="register" method="post" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="Full Name" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="password" name="password" placeholder="Password" required />
+    <input type="text" name="phone" placeholder="Phone Number" />
+    <input type="text" name="address" placeholder="Address" />
+    <button type="submit">Register</button>
+</form>
+
+
+<p class="form-footer">Already Have Acccount? <a href="${pageContext.request.contextPath}/login">Login</a></p>
+
+    <% String message = request.getParameter("message"); if (message != null) { %>
+        <p style="color:green;"><%= message %></p>
+    <% } %>
+</body>
+</html>

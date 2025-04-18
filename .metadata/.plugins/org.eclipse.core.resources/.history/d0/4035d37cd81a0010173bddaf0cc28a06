@@ -1,0 +1,16 @@
+<%@ page import="com.store.model.User" %>
+<html>
+<head><title>Home</title></head>
+<body>
+    <h2>Welcome, <%= user.getFullName() %>!</h2>
+    <p>Your role ID is: <%= user.getRoleId() %></p>
+
+    <% if (user.getRoleId() == 2) { %>
+        <p><strong>You are an Admin.</strong></p>
+    <% } else { %>
+        <p><strong>You are a regular user.</strong></p>
+    <% } %>
+
+    <a href="logout">Logout</a>
+</body>
+</html>

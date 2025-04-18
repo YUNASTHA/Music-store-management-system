@@ -1,0 +1,48 @@
+package com.store.controller;
+
+import com.store.model.User;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
+import java.io.IOException;
+
+/**
+ * Servlet responsible for displaying the home page with recent activities.
+ */
+@WebServlet(name = "HomeServlet", urlPatterns = {"/home", "/"})
+public class HomeServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+
+
+    /**
+     * Handles GET requests to view the home page.
+     * Retrieves and displays recent activities across all users.
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+
+        // Forward to home view
+        request.getRequestDispatcher("/home.jsp")
+              .forward(request, response);
+    }
+
+    /**
+     * POST method is not used for this servlet.
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+    }
+}

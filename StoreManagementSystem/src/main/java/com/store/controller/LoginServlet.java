@@ -1,0 +1,130 @@
+package com.store.controller;
+
+import com.store.dao.UserDAO;
+
+import com.store.model.User;
+import org.mindrot.jbcrypt.BCrypt;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+import java.io.IOException;
+
+@WebServlet(name = "LoginServlet", value = "/login")
+public class LoginServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private static final String REMEMBER_ME_COOKIE_NAME = "rememberMe";
+    private static final int COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
+
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	HttpSession session = request.getSession(false);
+    	
+        // If already logged in, redirect the user to the dashboard
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            if (user.getRoleId() == 2) {
+                response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/home");
+            }
+            return;
+        }
+    	
+    	
+        // Check if user is already logged in via remember me cookie
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (REMEMBER_ME_COOKIE_NAME.equals(cookie.getName())) {
+                    String[] credentials = decodeCookieValue(cookie.getValue());
+                    if (credentials != null && credentials.length == 2) {
+                        String email = credentials[0];
+                        String password = credentials[1];
+
+                        UserDAO userDAO = new UserDAO();
+                        User user = userDAO.getUserByEmail(email);
+
+                        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+                            // Auto login successful
+                            session.setAttribute("user", user);
+                            session.setAttribute("isLoggedIn", true);
+                            response.sendRedirect(request.getContextPath() + "/");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Redirect to the login.jsp page
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
+
+    
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        
+        // Get form parameters
+        String email = request.getParameter("email");
+        String plainPassword = request.getParameter("password");
+        String rememberMe = request.getParameter("rememberMe");
+
+        
+        if (email == null || email.trim().isEmpty() || plainPassword == null || plainPassword.trim().isEmpty()) {
+            request.setAttribute("error", "Email and password are required");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
+        
+        // Authenticate user
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUserByEmail(email);
+
+        if (user != null && BCrypt.checkpw(plainPassword, user.getPassword())) {
+            // Authentication successful
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            session.setAttribute("isLoggedIn", true);
+            
+            
+            // Handle remember me functionality
+            if (rememberMe != null && rememberMe.equals("on")) {
+                String cookieValue = encodeCookieValue(email, plainPassword);
+                Cookie rememberMeCookie = new Cookie(REMEMBER_ME_COOKIE_NAME, cookieValue);
+                rememberMeCookie.setMaxAge(COOKIE_MAX_AGE);
+                rememberMeCookie.setPath(request.getContextPath());
+                response.addCookie(rememberMeCookie);
+            }
+
+
+            // Role-based redirection
+            if (user.getRoleId() == 2) {
+                response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+
+            } else {
+                response.sendRedirect(request.getContextPath() + "/home");
+
+            }
+        } else {
+        	
+        	// Invalid credentials
+            request.setAttribute("error", "Invalid email or password");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+    }
+    
+    
+    // Helper method to encode email and password for cookie
+    private String encodeCookieValue(String username, String password) {
+        return username + ":"+password;
+    }
+
+    // Helper method to decode cookie value
+    private String[] decodeCookieValue(String cookieValue) {
+        return cookieValue.split(":");
+    }
+    
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="StoreManagementSystem">
+        <property name="context-root" value="StoreManagementSystem"/>
+        <property name="java-output-path" value="/StoreManagementSystem/build/classes"/>
+    </wb-module>
+</project-modules>

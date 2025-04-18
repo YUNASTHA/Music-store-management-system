@@ -1,0 +1,17 @@
+<%@ page import="com.store.model.User" %>
+<%@ page session="true" %>
+<%
+    User user = (User) session.getAttribute("user");
+    if (user == null || user.getRoleId() != 2) {
+        response.sendRedirect("login.jsp?message=Unauthorized access");
+        return;
+    }
+%>
+<html>
+<head><title>Admin Dashboard</title></head>
+<body>
+    <h2>Welcome Admin, <%= user.getFullName() %>!</h2>
+    <p>This is the admin dashboard.</p>
+    <a href="${pageContext.request.contextPath}/admin/Logout" class="button secondary">Sign Out</a>
+</body>
+</html>

@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\user\Documents\Music Store Management System\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+278645939.index
+2100702266.index
+1471593396.index
+2656066143.index
+4037704033.index
+2914106593.index

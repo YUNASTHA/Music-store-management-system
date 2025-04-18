@@ -1,0 +1,26 @@
+package com.store.dao;
+
+import com.store.model.User;
+import com.store.util.DBUtil;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class UserDAO {
+    public boolean registerUser(User user) {
+        boolean status = false;
+        try (Connection conn = DBUtil.getConnection()) {
+            String sql = "INSERT INTO users (full_name, email, password, role_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, user.getFullName());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getPassword());
+            stmt.setInt(4, user.getRoleId());
+
+            int rows = stmt.executeUpdate();
+            status = rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+}

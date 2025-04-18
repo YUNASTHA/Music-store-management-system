@@ -1,0 +1,29 @@
+<%@ page import="com.store.model.User" %>
+<%@ page session="true" %>
+<%
+    // Check if the user is already in session
+    User user = (User) session.getAttribute("user");
+    
+    
+
+    // If user is still null, redirect to login page
+    if (user == null) {
+        response.sendRedirect("login.jsp?message=Please login first");
+        return;
+    }
+%>
+<html>
+<head><title>Home</title></head>
+<body>
+    <h2>Welcome, <%= user.getFullName() %>!</h2>
+    <p>Your role ID is: <%= user.getRoleId() %></p>
+
+    <% if (user.getRoleId() == 2) { %>
+        <p><strong>You are an Admin.</strong></p>
+    <% } else { %>
+        <p><strong>You are a regular user.</strong></p>
+    <% } %>
+
+    <a href="logout">Logout</a>
+</body>
+</html>

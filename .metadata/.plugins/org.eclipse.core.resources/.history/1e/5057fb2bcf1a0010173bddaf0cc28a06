@@ -1,0 +1,57 @@
+package com.store.dao;
+
+import com.store.model.User;
+import java.sql.*;
+
+public class UserDAO {
+
+    // Method to get the database connection
+    private Connection getConnection() throws SQLException {
+        try {
+            // Database connection details (update as necessary)
+            String url = "jdbc:mysql://localhost:3306/your_database";
+            String username = "root";
+            String password = "password";
+            return DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            System.out.println("Database connection failed: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    // Method to register a user
+    public boolean registerUser(User user) {
+        boolean isRegistered = false;
+        try (Connection conn = getConnection()) {
+            // Check if email already exists
+            String checkEmailQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
+            try (PreparedStatement ps = conn.prepareStatement(checkEmailQuery)) {
+                ps.setString(1, user.getEmail());
+                ResultSet rs = ps.executeQuery();
+                if (rs.next() && rs.getInt(1) > 0) {
+                    // Email already exists
+                    return false;
+                }
+            }
+
+            // Insert the new user into the database
+            String query = "INSERT INTO users (name, email, password, role_id) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, user.getFullName());
+                ps.setString(2, user.getEmail());
+                ps.setString(3, user.getHashedPassword());
+                ps.setInt(4, user.getRoleId());
+
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected > 0) {
+                    isRegistered = true; // User successfully registered
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error during user registration: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return isRegistered;
+    }
+}

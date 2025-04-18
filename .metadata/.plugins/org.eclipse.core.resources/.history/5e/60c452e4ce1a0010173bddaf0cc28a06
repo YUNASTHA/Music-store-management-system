@@ -1,0 +1,33 @@
+package com.store.dao;
+
+import com.store.model.User;
+import com.store.util.DBUtil;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class UserDAO {
+	public boolean registerUser(User user) {
+	    boolean isRegistered = false;
+	    try {
+	        // Database connection and registration logic
+	        // For example:
+	        String query = "INSERT INTO users (name, email, password, role_id) VALUES (?, ?, ?, ?)";
+	        try (Connection conn = getConnection(); 
+	             PreparedStatement ps = conn.prepareStatement(query)) {
+	            ps.setString(1, user.getFullName());
+	            ps.setString(2, user.getEmail());
+	            ps.setString(3, user.getHashedPassword());
+	            ps.setInt(4, user.getRoleId());
+
+	            int rowsAffected = ps.executeUpdate();
+	            if (rowsAffected > 0) {
+	                isRegistered = true;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return isRegistered;
+	}
+
+}

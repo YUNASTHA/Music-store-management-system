@@ -1,0 +1,15 @@
+package com.store.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class DBUtil {
+    public static Connection getConnection() throws Exception {
+        String url = "jdbc:mysql://localhost:3306/store_db"; // your DB name
+        String user = "root"; // your DB user
+        String password = "your_password"; // your DB password
+
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection(url, user, password);
+    }
+}

@@ -1,0 +1,64 @@
+package com.store.controller;
+
+import com.store.dao.UserDAO;
+import com.store.model.User;
+import org.mindrot.jbcrypt.BCrypt;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+
+public class RegisterServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException, IOException {
+        // Forward to the registration page
+        request.getRequestDispatcher("register.jsp").forward(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        
+        // Get form data
+        String fullName = request.getParameter("name");
+        String email = request.getParameter("email");
+        String plainPassword = request.getParameter("password");
+
+        // Validate the inputs
+        if (fullName == null || fullName.isEmpty() || email == null || email.isEmpty() || plainPassword == null || plainPassword.isEmpty()) {
+            request.setAttribute("message", "All fields are required.");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
+
+        // Hash password
+        String hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+
+        // Create user object
+        User user = new User(fullName, email, hashedPassword, 1); // role_id = 1 (user)
+
+        // Initialize UserDAO
+        UserDAO userDAO = new UserDAO();
+        
+        // Check if email is already registered
+        if (userDAO.isEmailRegistered(email)) {
+            request.setAttribute("message", "Email is already registered.");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
+        
+        // Attempt to register the user
+        boolean isRegistered = userDAO.registerUser(user);
+
+        // Redirect based on registration outcome
+        if (isRegistered) {
+            request.setAttribute("message", "Registration successful!");
+        } else {
+            request.setAttribute("message", "Registration failed. Please try again.");
+        }
+
+        // Forward to the registration page with the message
+        request.getRequestDispatcher("register.jsp").forward(request, response);
+    }
+}

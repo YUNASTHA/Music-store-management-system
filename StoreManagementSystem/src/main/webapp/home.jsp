@@ -1,0 +1,41 @@
+<%@ page import="com.store.model.User" %>
+<%@ page session="true" %>
+<%
+
+
+    User user = (User) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.jsp?message=Please login first");
+        return;
+    }
+%>
+
+<% if (request.getAttribute("error") != null) { %>
+    <div style="color: red; font-weight: bold;">
+        <%= request.getAttribute("error") %>
+    </div>
+<% } %>
+
+
+
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h2>Welcome, <%= user.getFullName() %>!</h2>
+    <p>Your role ID is: <%= user.getRoleId() %></p>
+
+    <% if (user.getRoleId() == 2) { %>
+        <p><strong>You are an Admin.</strong></p>
+    <% } else { %>
+        <p><strong>You are a regular user.</strong></p>
+    <% } %>
+
+
+
+    <a href="<%= request.getContextPath() %>/logout">Logout</a>
+    
+    
+</body>
+</html>
