@@ -3,3 +3,10 @@
 0:0:0:0:0:0:0:1 - - [21/Apr/2025:08:20:43 +0545] "GET /favicon.ico HTTP/1.1" 404 762
 0:0:0:0:0:0:0:1 - - [21/Apr/2025:08:22:22 +0545] "GET /StoreManagementSystem/login HTTP/1.1" 404 682
 0:0:0:0:0:0:0:1 - - [21/Apr/2025:08:22:25 +0545] "GET /StoreManagementSystem/login HTTP/1.1" 404 682
+127.0.0.1 - - [21/Apr/2025:19:18:10 +0545] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [21/Apr/2025:19:18:42 +0545] "GET /StoreManagementSystem/login HTTP/1.1" 200 823
+0:0:0:0:0:0:0:1 - - [21/Apr/2025:19:18:43 +0545] "GET /favicon.ico HTTP/1.1" 404 762
+0:0:0:0:0:0:0:1 - - [21/Apr/2025:19:18:46 +0545] "POST /StoreManagementSystem/login HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [21/Apr/2025:19:18:48 +0545] "GET /StoreManagementSystem/home HTTP/1.1" 200 274
+0:0:0:0:0:0:0:1 - - [21/Apr/2025:19:18:51 +0545] "GET /StoreManagementSystem/logout HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [21/Apr/2025:19:18:51 +0545] "GET /StoreManagementSystem/login HTTP/1.1" 200 823
