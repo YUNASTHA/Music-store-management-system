@@ -93,6 +93,29 @@
       text-align: center;
       margin-top: 15px;
     }
+    
+    .success-message {
+	  color: #2e7d32; /* Green */
+	  background-color: #d0f0d8;
+	  border: 1px solid #81c784;
+	  padding: 10px;
+	  margin-top: 15px;
+	  border-radius: 4px;
+	  text-align: center;
+	  font-weight: bold;
+	}
+	
+	.error-message {
+	  color: #c62828; /* Red */
+	  background-color: #f8d7da;
+	  border: 1px solid #f44336;
+	  padding: 10px;
+	  margin-top: 15px;
+	  border-radius: 4px;
+	  text-align: center;
+	  font-weight: bold;
+	}
+	    
   </style>
 </head>
 <body>
@@ -126,12 +149,26 @@
       <p>Already have an account? <a href="login.jsp">Login</a></p>
     </div>
 
-    <%
-      String message = request.getParameter("message");
-      if (message != null) {
-    %>
-    <div class="message"><%= message %></div>
-    <% } %>
+   <!-- Display success message if exists -->
+	<%
+	  String successMessage = (String) request.getAttribute("success");
+	  if (successMessage != null) {
+	%>
+	  <div class="success-message"><%= successMessage %></div>
+	<%
+	  }
+	%>
+	
+	<!-- Display error message if exists -->
+	<%
+	  String errorMessage = (String) request.getAttribute("error");
+	  if (errorMessage != null) {
+	%>
+	  <div class="error-message"><%= errorMessage %></div>
+	<%
+	  }
+	%>
+
   </div>
 </main>
 

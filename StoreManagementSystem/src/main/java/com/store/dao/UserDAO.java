@@ -4,6 +4,7 @@ import com.store.model.User;
 import com.store.util.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class UserDAO {
 	public boolean registerUser(User user) {
@@ -53,5 +54,28 @@ public class UserDAO {
         }
         return user;
     }
+    
+    
+    public boolean isEmailExists(String email) {
+        boolean exists = false;
+        String sql = "SELECT email FROM users WHERE email = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+   	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                exists = true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return exists;
+    }
+
     
 }

@@ -32,10 +32,18 @@ public class RegisterServlet extends HttpServlet {
         String plainPassword = request.getParameter("password");
         String phoneNumber = request.getParameter("phone");
         String address = request.getParameter("address");
+        
+        UserDAO userDAO = new UserDAO();
+        // ✅ Check if email already exists
+        if (userDAO.isEmailExists(email)) {            
+            request.setAttribute("error", "Email already exists!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
 
        
         // Load default image as profile picture
-        InputStream imageStream = getServletContext().getResourceAsStream("/defualt_profile.jpg");
+        InputStream imageStream = getServletContext().getResourceAsStream("/default_profile.jpg");
         byte[] profilePicture = imageStream.readAllBytes();
         
         
@@ -46,13 +54,17 @@ public class RegisterServlet extends HttpServlet {
         User user = new User(fullName, email, hashedPassword, phoneNumber, address, profilePicture, 1); // role_id = 1
 
         // Register user
-        UserDAO userDAO = new UserDAO();
+       
         boolean isRegistered = userDAO.registerUser(user);
 
         if (isRegistered) {
-            response.sendRedirect("register.jsp?message=Registration successful!");
+        	
+        	request.setAttribute("success", "Registration successfull!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         } else {
-            response.sendRedirect("register.jsp?message=Registration failed.");
+            
+            request.setAttribute("error", "Registration Failed!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
 }
