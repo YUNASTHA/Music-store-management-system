@@ -1,0 +1,5 @@
+package com.store.filter;
+
+public class AdminAuthFilter {
+
+}
