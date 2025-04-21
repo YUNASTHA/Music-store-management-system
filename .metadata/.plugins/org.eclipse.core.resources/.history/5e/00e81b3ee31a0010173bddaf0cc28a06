@@ -1,5 +1,0 @@
-package com.store.filter;
-
-public class AuthFilter {
-
-}

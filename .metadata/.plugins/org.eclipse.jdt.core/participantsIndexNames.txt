@@ -1,7 +1,0 @@
-INDEX VERSION 1.134
-C:\Users\user\Documents\Music Store Management System\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2627032788.index
-\StoreManagementSystem\src\main\java
-\Users\sangamkarki\Documents\Music Store Management System\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3885224035.index
-\StoreManagementSystem\src\main\java
-C:\Users\user\Documents\Music Store Management System\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1820302044.index
-\StoreManagementSystem\src\main\java
