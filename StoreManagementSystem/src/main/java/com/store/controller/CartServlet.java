@@ -1,16 +1,13 @@
 package com.store.controller;
 
+import java.io.IOException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-import java.io.IOException;
 
-/**
- * Servlet responsible for displaying the home page with recent activities.
- */
-@WebServlet(name = "HomeServlet", urlPatterns = {"/home", "/"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
+public class CartServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
 
@@ -27,7 +24,7 @@ public class HomeServlet extends HttpServlet {
      
 
         // Forward to home view
-        request.getRequestDispatcher("/home.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/cart.jsp").forward(request, response);
 
     }
 }

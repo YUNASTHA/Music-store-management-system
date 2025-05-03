@@ -12,8 +12,9 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #efcdb8;
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
     }
 
     main {
@@ -24,25 +25,27 @@
     }
 
     .register-box {
-      background-color: white;
+      background-color: #ffffff;
       padding: 30px 40px;
-      border-radius: 5px;
+      border-radius: 8px;
       width: 450px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
     }
 
     .register-box h2 {
-      background-color: #40362e;
-      color: white;
+      background-color: #1a273b;
+      color: #ffffff;
       margin: -30px -40px 20px -40px;
       padding: 20px;
       text-align: center;
       font-size: 24px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
     }
 
     label {
       display: block;
-      font-weight: bold;
+      font-weight: 600;
       margin-top: 15px;
       text-align: left;
     }
@@ -53,13 +56,14 @@
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       border-radius: 5px;
-      background-color: #f7f7f7;
+      background-color: #f4f4f4;
+      color: #333;
     }
 
     .register-btn {
-      background-color: #40362e;
+      background-color: #1a273b;
       color: white;
       border: none;
       padding: 12px 24px;
@@ -72,7 +76,7 @@
     }
 
     .register-btn:hover {
-      background-color: #2f2a20;
+      background-color: #152032;
       transform: scale(1.05);
     }
 
@@ -84,38 +88,31 @@
 
     .register-link a {
       font-weight: bold;
-      color: black;
+      color: #1a273b;
       text-decoration: underline;
     }
 
-    .message {
-      color: green;
-      text-align: center;
-      margin-top: 15px;
-    }
-    
     .success-message {
-	  color: #2e7d32; /* Green */
-	  background-color: #d0f0d8;
-	  border: 1px solid #81c784;
-	  padding: 10px;
-	  margin-top: 15px;
-	  border-radius: 4px;
-	  text-align: center;
-	  font-weight: bold;
-	}
-	
-	.error-message {
-	  color: #c62828; /* Red */
-	  background-color: #f8d7da;
-	  border: 1px solid #f44336;
-	  padding: 10px;
-	  margin-top: 15px;
-	  border-radius: 4px;
-	  text-align: center;
-	  font-weight: bold;
-	}
-	    
+      color: #2e7d32;
+      background-color: #e8f5e9;
+      border: 1px solid #66bb6a;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 4px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .error-message {
+      color: #d32f2f;
+      background-color: #fbe9e7;
+      border: 1px solid #e57373;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 4px;
+      text-align: center;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -130,17 +127,14 @@
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required />
       
-       <label for="address">Address</label>
+      <label for="address">Address</label>
       <input type="text" id="address" name="address" />
 
-      
       <label for="phone">Phone Number</label>
       <input type="text" id="phone" name="phone" />
-      
+
       <label for="password">Password</label>
       <input type="password" id="password" name="password" required />
-      
-     
 
       <button type="submit" class="register-btn">Register</button>
     </form>
@@ -149,26 +143,25 @@
       <p>Already have an account? <a href="login.jsp">Login</a></p>
     </div>
 
-   <!-- Display success message if exists -->
-	<%
-	  String successMessage = (String) request.getAttribute("success");
-	  if (successMessage != null) {
-	%>
-	  <div class="success-message"><%= successMessage %></div>
-	<%
-	  }
-	%>
-	
-	<!-- Display error message if exists -->
-	<%
-	  String errorMessage = (String) request.getAttribute("error");
-	  if (errorMessage != null) {
-	%>
-	  <div class="error-message"><%= errorMessage %></div>
-	<%
-	  }
-	%>
+    <%-- Success Message --%>
+    <%
+      String successMessage = (String) request.getAttribute("success");
+      if (successMessage != null) {
+    %>
+      <div class="success-message"><%= successMessage %></div>
+    <%
+      }
+    %>
 
+    <%-- Error Message --%>
+    <%
+      String errorMessage = (String) request.getAttribute("error");
+      if (errorMessage != null) {
+    %>
+      <div class="error-message"><%= errorMessage %></div>
+    <%
+      }
+    %>
   </div>
 </main>
 

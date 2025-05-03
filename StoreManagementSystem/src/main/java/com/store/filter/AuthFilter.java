@@ -23,9 +23,9 @@ public class AuthFilter implements Filter {
         String uri = req.getRequestURI();
         String ctx = req.getContextPath();
 
-        // Allow login/logout/register and static files
-        boolean isPublic = uri.equals(ctx + "/login") || uri.equals(ctx + "/logout") || uri.equals(ctx + "/register") ||
-                uri.contains("/assets/") || uri.contains("/static/") ||
+        // Allow login/logout/register and static files  
+        boolean isPublic = uri.equals(ctx + "/login") || uri.equals(ctx + "/logout") || uri.equals(ctx + "/home") || uri.equals(ctx + "/register") ||
+        		uri.equals(ctx + "/product") || uri.equals(ctx + "/cart") || uri.equals(ctx + "/aboutUs") || uri.contains("/assets/") || uri.contains("/static/") ||
                 uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".png") || uri.endsWith(".jpg") ||
                 uri.endsWith(".jpeg") || uri.endsWith(".gif") || uri.endsWith(".svg") || uri.endsWith(".ico");
 
