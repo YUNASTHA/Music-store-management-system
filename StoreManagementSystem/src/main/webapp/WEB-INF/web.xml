@@ -32,7 +32,7 @@
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ProductServlet</servlet-name>
 		<servlet-class>com.store.controller.ProductServlet</servlet-class>
@@ -41,6 +41,10 @@
 		<servlet-name>ProductServlet</servlet-name>
 		<url-pattern>/Product</url-pattern>
 	</servlet-mapping>
+
+
+
+	
 
 
 

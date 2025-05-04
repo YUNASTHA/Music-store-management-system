@@ -5,6 +5,8 @@ import com.store.util.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 	public boolean registerUser(User user) {
@@ -26,7 +28,7 @@ public class UserDAO {
 	        return rowsInserted > 0;
 
 	    } catch (Exception e) {
-	        e.printStackTrace(); // THIS is important for debugging
+	        e.printStackTrace(); 
 	        return false;
 	    }
 	}
@@ -76,6 +78,43 @@ public class UserDAO {
 
         return exists;
     }
+    
+    
+    
+
+    public static List<User> getUsersByRoleId(int roleId) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE roleId = ?";
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            // Set the roleId in the prepared statement
+            ps.setInt(1, roleId);
+
+            // Execute the query
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // Map the result set to a User object and add to the list
+                    User user = new User();
+                    user.setUserId(rs.getInt("userId"));
+                    user.setFullName(rs.getString("fullName"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setPhoneNumber(rs.getString("phoneNumber"));
+                    user.setAddress(rs.getString("address"));
+                    user.setProfilePicture(rs.getBytes("profilePicture"));
+                    user.setRoleId(rs.getInt("roleId"));
+                    users.add(user);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle exception appropriately, such as logging it
+        }
+        return users;
+    }
+    
+
 
     
 }

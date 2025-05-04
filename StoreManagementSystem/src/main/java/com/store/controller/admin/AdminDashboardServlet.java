@@ -27,11 +27,13 @@ public class AdminDashboardServlet extends HttpServlet {
             return;
         }
 
-        
-
+       
         request.setAttribute("currentUser", currentUser);
 
         // Forward to admin dashboard JSP
-        request.getRequestDispatcher("/admin-dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/admin/admin-dashboard.jsp").forward(request, response);
     }
 }
+
+
+

@@ -34,7 +34,7 @@ public class RegisterServlet extends HttpServlet {
         String address = request.getParameter("address");
         
         UserDAO userDAO = new UserDAO();
-        // ✅ Check if email already exists
+        // Check if email already exists
         if (userDAO.isEmailExists(email)) {            
             request.setAttribute("error", "Email already exists!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
