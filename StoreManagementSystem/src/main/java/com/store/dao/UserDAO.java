@@ -82,39 +82,34 @@ public class UserDAO {
     
     
 
-    public static List<User> getUsersByRoleId(int roleId) {
-        List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users WHERE roleId = ?";
+   
+    public List<User> getAllUsersByRoleId(int roleId) {
+        List<User> userList = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE role_id = ?";
 
-        try (Connection connection = DBUtil.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Set the roleId in the prepared statement
-            ps.setInt(1, roleId);
+            stmt.setInt(1, roleId);
+            ResultSet rs = stmt.executeQuery();
 
-            // Execute the query
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    // Map the result set to a User object and add to the list
-                    User user = new User();
-                    user.setUserId(rs.getInt("userId"));
-                    user.setFullName(rs.getString("fullName"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setPhoneNumber(rs.getString("phoneNumber"));
-                    user.setAddress(rs.getString("address"));
-                    user.setProfilePicture(rs.getBytes("profilePicture"));
-                    user.setRoleId(rs.getInt("roleId"));
-                    users.add(user);
-                }
+            while (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setPhoneNumber(rs.getString("phone_number"));
+                user.setAddress(rs.getString("address"));
+                user.setProfilePicture(rs.getBytes("profile_picture"));
+                user.setRoleId(rs.getInt("role_id"));
+                userList.add(user);
             }
+
         } catch (Exception e) {
-            e.printStackTrace(); // Handle exception appropriately, such as logging it
+            e.printStackTrace();
         }
-        return users;
+
+        return userList;
     }
-    
-
-
-    
 }

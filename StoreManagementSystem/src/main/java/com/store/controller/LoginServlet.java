@@ -5,10 +5,11 @@ import com.store.dao.UserDAO;
 import com.store.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
+
 
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {

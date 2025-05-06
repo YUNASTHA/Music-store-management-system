@@ -2,12 +2,13 @@ package com.store.controller.admin;
 
 import com.store.dao.UserDAO;
 import com.store.model.User;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -22,24 +23,26 @@ public class CustomerListServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
 
-        // Check if the current user is logged in
+        // Redirect to login if not logged in
         if (currentUser == null) {
-            response.sendRedirect("/login");  // Redirect if user is not logged in
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-     // Fetch all users with roleId = 1 from the database
-        List<User> usersWithRoleId1 = UserDAO.getUsersByRoleId(2);
+        UserDAO userDAO = new UserDAO();
+        List<User> usersWithRoleId1 = userDAO.getAllUsersByRoleId(1); // role_id = 1
 
-        // Check if there are users with roleId = 1
+        // Debug output (optional)
         if (usersWithRoleId1 != null && !usersWithRoleId1.isEmpty()) {
             request.setAttribute("users", usersWithRoleId1);
         } else {
+            System.out.println("No users with role ID 1 found.");
             request.setAttribute("error", "No users with role ID 1 found.");
         }
-        // Forward to the JSP for displaying the user
+
         request.getRequestDispatcher("/views/admin/customer-list.jsp").forward(request, response);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

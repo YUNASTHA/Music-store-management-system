@@ -13,23 +13,25 @@ import java.sql.ResultSet;
 
 public class ProductDAO {
 
-    // Add a new product
-    public boolean addProduct(Product product) {
-        String sql = "INSERT INTO products (name, description, price, stock, is_active) VALUES (?, ?, ?, ?, ?)";
+	// Add a new product
+	public boolean addProduct(Product product) {
+	    String sql = "INSERT INTO products (name, description, price, stock, is_active, image) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, product.getName());
-            stmt.setString(2, product.getDescription());
-            stmt.setDouble(3, product.getPrice());
-            stmt.setInt(4, product.getStock());
-            stmt.setBoolean(5, product.getIsActive());
-            return stmt.executeUpdate() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, product.getName());
+	        stmt.setString(2, product.getDescription());
+	        stmt.setDouble(3, product.getPrice());
+	        stmt.setInt(4, product.getStock());
+	        stmt.setBoolean(5, product.getIsActive()); 
+	        stmt.setString(6, product.getImage()); 
+	        return stmt.executeUpdate() > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 
     // Get all products
     public List<Product> getAllProducts() {

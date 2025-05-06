@@ -1,67 +1,99 @@
 <jsp:include page="admin-navbar.jsp" />
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
+<%@ page import="com.store.model.Product" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
-    <title>Add Product</title>
+    <title>Admin - Add Product</title>
     <style>
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
         }
 
-        .container {
-            margin-top: 100px; /* Space to prevent overlap with navbar */
-            padding: 20px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 10px;
+        .main-content {
+            margin-left: 220px;
+            padding: 30px;
         }
 
         h2 {
-            text-align: center;
-            margin-bottom: 20px;
+            color: #2c3e50;
+			text-align: center;        
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         form label {
             font-weight: bold;
-            margin-top: 10px;
             display: block;
+            margin-bottom: 5px;
+            color: #34495e;
         }
 
-        form input {
-            display: block;
+        form input,
+        form textarea,
+        form select {
             width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        form input:focus,
+        form textarea:focus,
+        form select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        form textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 90px;
+        }
+
+        .form-row input {
+            width: 140%; 
         }
 
         button {
-            padding: 10px 20px;
-            background-color: #007bff;
+            padding: 12px;
+            background-color: #1e3a5f;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            width: 100%;
             font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #152032;
+      transform: scale(1.05);
         }
 
         .message {
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             text-align: center;
             font-weight: bold;
         }
@@ -79,31 +111,47 @@
 </head>
 <body>
 
-<div class="container">
+<div class="main-content">
     <h2>Add New Product</h2>
 
-    <!-- Display message if exists -->
-    <c:if test="${not empty message}">
-        <div class="message ${message == 'Product added successfully!' ? 'success' : 'error'}">
-            ${message}
-        </div>
-    </c:if>
+    <div class="container">
+        <!-- Display message if exists -->
+        <c:if test="${not empty message}">
+            <div class="message ${message == 'Product added successfully!' ? 'success' : 'error'}">
+                ${message}
+            </div>
+        </c:if>
 
-    <form action="<%= request.getContextPath() %>/admin/product" method="post">
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" required>
+        <!-- Add Product Form -->
+        <form action="<%= request.getContextPath() %>/admin/product" method="post" enctype="multipart/form-data">
+            <label for="name">Product Name:</label>
+            <input type="text" name="name" id="name" required>
 
-        <label for="description">Description:</label>
-        <input type="text" name="description" id="description" required>
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" required></textarea>
 
-        <label for="price">Price:</label>
-        <input type="text" name="price" id="price" required>
+            <!-- Price and Stock on the same line with adjusted widths -->
+            <div class="form-row">
+                <div>
+                    <label for="price">Price:</label>
+                    <input type="number" step="0.01" name="price" id="price" required>
+                </div>
+                <div>
+                    <label for="stock">Stock:</label>
+                    <input type="number" name="stock" id="stock" required>
+                </div>
+            </div>
 
-        <label for="stock">Stock:</label>
-        <input type="text" name="stock" id="stock" required>
+            <label for="image">Product Image:</label>
+            <input type="file" name="image" id="image" accept="image/*">
 
-        <button type="submit">Submit</button>
-    </form>
+            <label for="is_active">Active:</label>
+            <input type="checkbox" name="is_active" id="is_active" value="true">
+
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+
 </div>
 
 </body>

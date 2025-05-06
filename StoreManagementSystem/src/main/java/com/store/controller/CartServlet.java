@@ -1,9 +1,9 @@
 package com.store.controller;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
 
 
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})

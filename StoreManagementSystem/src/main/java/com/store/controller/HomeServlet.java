@@ -1,10 +1,10 @@
 package com.store.controller;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
-
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
+
 
 /**
  * Servlet responsible for displaying the home page with recent activities.

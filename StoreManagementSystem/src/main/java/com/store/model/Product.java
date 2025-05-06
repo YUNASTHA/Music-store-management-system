@@ -7,6 +7,8 @@ public class Product {
     private double price;
     private int stock;
     private boolean isActive;
+    private String image; 
+
 
     // Constructor
     public Product() {}
@@ -60,5 +62,13 @@ public class Product {
 
     public void setIsActive(boolean active) {
         this.isActive = active;
+    }
+    
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
