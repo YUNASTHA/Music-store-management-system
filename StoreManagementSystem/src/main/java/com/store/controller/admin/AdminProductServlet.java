@@ -51,14 +51,14 @@ public class AdminProductServlet extends HttpServlet {
             return;
         }
 
-        // Get form data
+        // Get data from admin
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         double price = Double.parseDouble(request.getParameter("price"));
         int stock = Integer.parseInt(request.getParameter("stock"));
         boolean isActive = "true".equalsIgnoreCase(request.getParameter("is_active"));
 
-        // Handle image
+        // Handle image upload
         Part imagePart = request.getPart("image");
         String contentDisp = imagePart.getHeader("content-disposition");
         String imageFileName = "default_product.jpg"; // default name
@@ -80,7 +80,7 @@ public class AdminProductServlet extends HttpServlet {
             }
         }
 
-        // Save product
+        // Save product in the database
         Product product = new Product();
         product.setName(name);
         product.setDescription(description);
