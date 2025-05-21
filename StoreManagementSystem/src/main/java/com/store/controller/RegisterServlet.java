@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        // Get form data
+        // Get form data1
         String fullName = request.getParameter("name");
         String email = request.getParameter("email");
         String plainPassword = request.getParameter("password");

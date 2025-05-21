@@ -7,7 +7,7 @@ public class DBUtil {
     public static Connection getConnection() throws Exception {
         String url = "jdbc:mysql://localhost:3306/musicstore"; // Database name
         String user = "root"; // Database username
-        String password = ""; // Database password
+        String password = "root"; // Database password
 
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(url, user, password);
