@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,25 +46,22 @@
         }
 
         .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    justify-items: start; 
-}
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            justify-items: start;
+        }
 
-.card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    max-width: 300px;
-        min-width: 300px;
-    
-}
-        
-
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            max-width: 300px;
+            min-width: 300px;
+        }
 
         .card-img {
             height: 200px;
@@ -129,6 +127,7 @@
     </style>
 </head>
 <body>
+
 <%@ include file="../navbar.jsp" %>
 
 <div class="container">
@@ -143,20 +142,25 @@
     </div>
 
     <div class="product-grid">
-        <c:forEach var="product" items="${productList}">
+        <c:forEach var="product" items="${productList}">		
+
             <div class="card">
-                <div class="card-img">
-                    <img src="${product.imageUrl}" alt="product.name">
+                <div class="card-img">	
+                    <img src="https://vintageguitarsrus.com/cdn/shop/products/V130VSB_1_a5458a25-dde8-4434-acd2-ad809e33aa99.jpg?v=1643976842" alt="${product.name}" />
+                    
+                    
+					
                 </div>
                 <div class="card-body">
-                    <h6>product.name}</h6>
-                    <h6 class="price">Rs. 290}</h6>
+                    <h6>${product.name}</h6>
+                    <h6 class="price">Rs. ${product.price}</h6>
                     <div class="card-actions">
-                        <form action="add-to-cart" method="post" style="flex: 1;">
-                            <input type="hidden" name="productId" value="${product.id}">
-                            <button type="submit" class="btn btn-outline-dark">Add to Cart</button>
-                        </form>
-                        <a href="view-product?id=${product.id}" class="btn btn-dark">View</a>
+                        <form action="${pageContext.request.contextPath}/cart" method="post">
+						    <input type="hidden" name="productId" value="${product.productId}">
+						    <input type="number" name="quantity" value="1" min="1">
+						    <button type="submit">Add to Cart</button>
+						</form>
+                        <a href="view-product?id=${product.productId}" class="btn btn-dark">View</a>
                     </div>
                 </div>
             </div>

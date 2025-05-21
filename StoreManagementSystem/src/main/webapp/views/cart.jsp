@@ -1,4 +1,6 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -131,48 +133,53 @@
 
 <div class="cart-page">
     <div class="cart-items">
-        <h2>Cart Items (2)</h2>
-        
-        <div class="cart-item">
-            <div class="item-info">
-                <img src="https://via.placeholder.com/70" alt="Acoustic Guitar">
-                <div class="item-details">
-                    <span class="item-name">Acoustic Guitar</span>
-                    <span>$299.99 each</span>
-                </div>
-            </div>
-            <div class="qty-controls">
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-            </div>
-            <div>$299.99</div>
-            <button class="btn-remove">Remove</button>
-        </div>
+        <h2>Cart Items (${cartItems.size()})</h2>
 
-        <div class="cart-item">
-            <div class="item-info">
-                <img src="https://via.placeholder.com/70" alt="Electric Keyboard">
-                <div class="item-details">
-                    <span class="item-name">Electric Keyboard</span>
-                    <span>$499.99 each</span>
+        <c:forEach var="cart" items="${cartItems}">
+            <div class="cart-item">
+                <div class="item-info">
+                    <img src="https://vintageguitarsrus.com/cdn/shop/products/V130VSB_1_a5458a25-dde8-4434-acd2-ad809e33aa99.jpg?v=1643976842" alt="${cart.product.name}">
+                    <div class="item-details">
+                        <span class="item-name">${cart.product.name}</span>
+                        <span>$${cart.product.price} each</span>
+                    </div>
                 </div>
-            </div>
-            <div class="qty-controls">
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-            </div>
-            <div>$499.99</div>
-            <button class="btn-remove">Remove</button>
+                <div class="qty-controls">
+  <form method="post" action="${pageContext.request.contextPath}/updatecart" style="display:inline;">
+    <input type="hidden" name="productId" value="${cart.product.productId}" />
+    <input type="hidden" name="action" value="decrease" />
+    <button type="submit">-</button>
+  </form>
+
+  <span class="qty">${cart.quantity}</span>
+
+  <form method="post" action="${pageContext.request.contextPath}/updatecart" style="display:inline;">
+    <input type="hidden" name="productId" value="${cart.product.productId}" />
+    <input type="hidden" name="action" value="increase" />
+    <button type="submit">+</button>
+  </form>
+</div>
+                
+
+        <div>
+            $<span class="price" id="price-${cart.product.productId}">
+                <c:out value="${cart.quantity * cart.product.price}" />
+            </span>
         </div>
+            </div>
+        </c:forEach>
     </div>
 
     <div class="order-summary">
         <h3>Order Summary</h3>
+        <c:set var="subtotal" value="0" />
+        <c:forEach var="cart" items="${cartItems}">
+            <c:set var="subtotal" value="${subtotal + (cart.quantity * cart.product.price)}" />
+        </c:forEach>
+
         <div class="summary-row">
             <span>Subtotal</span>
-            <span>$799.98</span>
+            <span>$<c:out value="${subtotal}" /></span>
         </div>
         <div class="summary-row">
             <span>Shipping</span>
@@ -181,12 +188,22 @@
         <hr>
         <div class="summary-row" style="font-weight: 700;">
             <span>Total</span>
-            <span>$799.98</span>
+            <span>$<c:out value="${subtotal}" /></span>
         </div>
         <p style="font-size: 13px; color: gray;">Your order qualifies for free shipping!</p>
-        <button class="checkout-btn">Proceed to Checkout</button>
+        <form method="post" action="${pageContext.request.contextPath}/checkout">
+         <input type="hidden" name="subtotal" value="${subtotal}" />
+    <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+</form>
     </div>
 </div>
+
+
+
+
+
+
+
 
 </body>
 </html>
