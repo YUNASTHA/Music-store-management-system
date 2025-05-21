@@ -112,4 +112,51 @@ public class UserDAO {
 
         return userList;
     }
+    
+    
+    public int countUsersByRole(int roleId) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM users WHERE role_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, roleId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    
+    
+    
+    
+    public User getUserById(int userId) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE id = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User();
+                    user.setUserId(rs.getInt("id"));
+                    user.setFullName(rs.getString("name")); 
+                    user.setEmail(rs.getString("email"));
+                    user.setRoleId(rs.getInt("role_id"));
+                    // Add any other necessary fields
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+
 }

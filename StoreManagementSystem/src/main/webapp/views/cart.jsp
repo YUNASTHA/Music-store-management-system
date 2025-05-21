@@ -179,7 +179,7 @@
 
         <div class="summary-row">
             <span>Subtotal</span>
-            <span>$<c:out value="${subtotal}" /></span>
+            <span>Rs.<c:out value="${subtotal}" /></span>
         </div>
         <div class="summary-row">
             <span>Shipping</span>

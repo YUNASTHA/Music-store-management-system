@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <title>Admin - Add Product</title>
+    <title>Admin - Edit Product</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,7 +20,7 @@
 
         h2 {
             color: #2c3e50;
-            text-align: center;        
+            text-align: center;
         }
 
         .container {
@@ -69,7 +69,7 @@
         }
 
         .form-row input {
-            width: 140%; 
+            width: 140%;
         }
 
         button {
@@ -106,53 +106,67 @@
             background-color: #f8d7da;
             color: #721c24;
         }
+
+        .current-image {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .current-image img {
+            max-width: 200px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
 <div class="main-content">
-    <h2>Add New Product</h2>
+    <h2>Edit Product</h2>
 
     <div class="container">
-        <!-- Display message if exists -->
         <c:if test="${not empty message}">
-            <div class="message ${message == 'Product added successfully.' ? 'success' : 'error'}">
+            <div class="message ${message == 'Product updated successfully.' ? 'success' : 'error'}">
                 ${message}
             </div>
         </c:if>
 
-        <!-- Add Product Form -->
         <form action="${pageContext.request.contextPath}/admin/product" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="action" value="add" />
+            <input type="hidden" name="action" value="update" />
+            <input type="hidden" name="product_id" value="${product.productId}" />
 
             <label for="name">Product Name:</label>
-            <input type="text" name="name" id="name" required>
+            <input type="text" name="name" id="name" value="${product.name}" required>
 
             <label for="description">Description:</label>
-            <textarea name="description" id="description" required></textarea>
+            <textarea name="description" id="description" required>${product.description}</textarea>
 
-            <!-- Price and Stock in same row -->
             <div class="form-row">
                 <div>
                     <label for="price">Price:</label>
-                    <input type="number" step="0.01" name="price" id="price" required>
+                    <input type="number" step="0.01" name="price" id="price" value="${product.price}" required>
                 </div>
                 <div>
                     <label for="stock">Stock:</label>
-                    <input type="number" name="stock" id="stock" required>
+                    <input type="number" name="stock" id="stock" value="${product.stock}" required>
                 </div>
             </div>
 
-            <label for="image">Product Image:</label>
+            <c:if test="${not empty product.image}">
+                <div class="current-image">
+                    <label>Current Image:</label><br/>
+                    <img src="${pageContext.request.contextPath}/uploads/${product.image}" alt="Product Image"/>
+                </div>
+            </c:if>
+
+            <label for="image">Upload New Image (optional):</label>
             <input type="file" name="image" id="image" accept="image/*">
 
             <label for="is_active">Active:</label>
-            <input type="checkbox" name="is_active" id="is_active" value="true">
+            <input type="checkbox" name="is_active" id="is_active" value="true" ${product.isActive ? "checked" : ""}>
 
-            <button type="submit">Add Product</button>
+            <button type="submit">Update Product</button>
         </form>
     </div>
-
 </div>
 
 </body>

@@ -14,7 +14,7 @@
             margin: 0;
         }
         .main-content {
-            margin-left: 220px; /* Adjust based on your sidebar width */
+            margin-left: 220px; 
             padding: 30px;
         }
         h2 {
@@ -64,7 +64,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>User ID</th>
                     <th>Full Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
@@ -74,7 +73,6 @@
             <tbody>
                 <c:forEach var="user" items="${users}">
                     <tr>
-                        <td>${user.userId}</td>
                         <td>${user.fullName}</td>
                         <td>${user.email}</td>
                         <td>${user.phoneNumber}</td>

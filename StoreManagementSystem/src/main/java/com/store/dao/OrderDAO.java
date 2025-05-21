@@ -78,4 +78,52 @@ public class OrderDAO {
 	        return null;
 	    }
 
+	 
+
+	    public List<Order> getAllOrders() {
+	        List<Order> orders = new ArrayList<>();
+
+	        String sql = "SELECT order_id, user_id, status, total FROM orders";
+
+	        try (Connection conn = DBUtil.getConnection();
+	             PreparedStatement stmt = conn.prepareStatement(sql);
+	             ResultSet rs = stmt.executeQuery()) {
+
+	            while (rs.next()) {
+	                Order order = new Order();
+	                order.setOrderId(rs.getInt("order_id"));
+	                order.setUserId(rs.getInt("user_id"));
+	                order.setStatus(rs.getString("status"));
+	                order.setTotal(rs.getFloat("total"));
+
+	                orders.add(order);
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+
+	        return orders;
+	    }
+
+	 
+	 public int countOrders() {
+		    int count = 0;
+		    String sql = "SELECT COUNT(*) FROM orders";
+		    try (Connection conn = DBUtil.getConnection();
+		         PreparedStatement stmt = conn.prepareStatement(sql)) {
+		        ResultSet rs = stmt.executeQuery();
+		        if (rs.next()) {
+		            count = rs.getInt(1);
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		    return count;
+		}
+	 
+	 
+		
+	 
+	 
 }

@@ -98,7 +98,7 @@
 <div class="sidebar">
     <a href="<%= request.getContextPath() %>/admin/dashboard" >Dashboard</a>
 
-    <a href="<%= request.getContextPath() %>/admin/product" >Add Products</a>
+    <a href="<%= request.getContextPath() %>/admin/product" >Products</a>
     <a href="<%= request.getContextPath() %>/admin/list-users"">Customer</a>
     <a href="<%= request.getContextPath() %>/logout" class="text-danger">Logout</a>
 </div>
