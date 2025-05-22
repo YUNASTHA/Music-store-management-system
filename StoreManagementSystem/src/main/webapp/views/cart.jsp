@@ -125,6 +125,13 @@
         .checkout-btn:hover {
             background-color: #2a4f77;
         }
+
+        .empty-cart-message {
+            font-size: 18px;
+            color: #ff6347;
+            text-align: center;
+            margin-top: 50px;
+        }
     </style>
 </head>
 <body>
@@ -133,41 +140,46 @@
 
 <div class="cart-page">
     <div class="cart-items">
-        <h2>Cart Items (${cartItems.size()})</h2>
+        <c:choose>
+            <c:when test="${not empty cartItems}">
+                <h2>Cart Items (${cartItems.size()})</h2>
 
-        <c:forEach var="cart" items="${cartItems}">
-            <div class="cart-item">
-                <div class="item-info">
-                    <img src="https://vintageguitarsrus.com/cdn/shop/products/V130VSB_1_a5458a25-dde8-4434-acd2-ad809e33aa99.jpg?v=1643976842" alt="${cart.product.name}">
-                    <div class="item-details">
-                        <span class="item-name">${cart.product.name}</span>
-                        <span>$${cart.product.price} each</span>
+                <c:forEach var="cart" items="${cartItems}">
+                    <div class="cart-item">
+                        <div class="item-info">
+                            <img src="https://vintageguitarsrus.com/cdn/shop/products/V130VSB_1_a5458a25-dde8-4434-acd2-ad809e33aa99.jpg?v=1643976842" alt="${cart.product.name}">
+                            <div class="item-details">
+                                <span class="item-name">${cart.product.name}</span>
+                                <span>Rs.${cart.product.price} each</span>
+                            </div>
+                        </div>
+                        <div class="qty-controls">
+                            <form method="post" action="${pageContext.request.contextPath}/updatecart" style="display:inline;">
+                                <input type="hidden" name="productId" value="${cart.product.productId}" />
+                                <input type="hidden" name="action" value="decrease" />
+                                <button type="submit">-</button>
+                            </form>
+                            <span class="qty">${cart.quantity}</span>
+                            <form method="post" action="${pageContext.request.contextPath}/updatecart" style="display:inline;">
+                                <input type="hidden" name="productId" value="${cart.product.productId}" />
+                                <input type="hidden" name="action" value="increase" />
+                                <button type="submit">+</button>
+                            </form>
+                        </div>
+                        <div style="padding:10px">
+                            Rs.<span class="price" id="price-${cart.product.productId}">
+                                <c:out value="${cart.quantity * cart.product.price}" />
+                            </span>
+                        </div>
                     </div>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <div class="empty-cart-message">
+                    Your cart is empty. Start shopping now!
                 </div>
-                <div class="qty-controls">
-  <form method="post" action="${pageContext.request.contextPath}/updatecart" style="display:inline;">
-    <input type="hidden" name="productId" value="${cart.product.productId}" />
-    <input type="hidden" name="action" value="decrease" />
-    <button type="submit">-</button>
-  </form>
-
-  <span class="qty">${cart.quantity}</span>
-
-  <form method="post" action="${pageContext.request.contextPath}/updatecart" style="display:inline;">
-    <input type="hidden" name="productId" value="${cart.product.productId}" />
-    <input type="hidden" name="action" value="increase" />
-    <button type="submit">+</button>
-  </form>
-</div>
-                
-
-        <div>
-            $<span class="price" id="price-${cart.product.productId}">
-                <c:out value="${cart.quantity * cart.product.price}" />
-            </span>
-        </div>
-            </div>
-        </c:forEach>
+            </c:otherwise>
+        </c:choose>
     </div>
 
     <div class="order-summary">
@@ -188,22 +200,15 @@
         <hr>
         <div class="summary-row" style="font-weight: 700;">
             <span>Total</span>
-            <span>$<c:out value="${subtotal}" /></span>
+            <span>Rs.<c:out value="${subtotal}" /></span>
         </div>
         <p style="font-size: 13px; color: gray;">Your order qualifies for free shipping!</p>
         <form method="post" action="${pageContext.request.contextPath}/checkout">
-         <input type="hidden" name="subtotal" value="${subtotal}" />
-    <button type="submit" class="checkout-btn">Proceed to Checkout</button>
-</form>
+            <input type="hidden" name="subtotal" value="${subtotal}" />
+            <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+        </form>
     </div>
 </div>
-
-
-
-
-
-
-
 
 </body>
 </html>

@@ -92,7 +92,10 @@
             <li><a href="product" class="<%= request.getRequestURI().endsWith("orders.jsp") ? "active" : "" %>">Products</a></li>
             
             <li><a href="cart" class="<%= request.getRequestURI().endsWith("cart.jsp") ? "active" : "" %>">Cart</a></li>
+            <li><a href="orderhistory" class="<%= request.getRequestURI().endsWith("Order.jsp") ? "active" : "" %>">Orders</a></li>
+            
             <li><a href="aboutUs" class="<%= request.getRequestURI().endsWith("about.jsp") ? "active" : "" %>">About Us</a></li>
+            
         </ul>
     </nav>
 
@@ -102,11 +105,11 @@
             User user = (User) session.getAttribute("user");
             if (user != null) {
         %>
-            <!-- Display user profile if logged in -->
+            <!-- Display user full name if logged in -->
             <div style="display: flex; align-items: center; gap: 10px;">
-			<img src=" %>" alt="Profile" style="width: 30px; height: 30px; border-radius: 50%;">
                 
-                <span style="font-weight: 600; color: #2f2f2f;"><%= user.getFullName() %></span>
+                <span style="font-weight: 600; color: #ffffff;"><%= user.getFullName() %></span>
+                
             </div>
                 <a href="<%= request.getContextPath() %>/logout">Logout</a>
             

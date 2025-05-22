@@ -14,6 +14,7 @@ import java.util.List;
 public class CartServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    // GET: Display cart page
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -30,26 +31,26 @@ public class CartServlet extends HttpServlet {
 
         CartItemDAO cartItemDAO = new CartItemDAO();
         List<CartItem> cartItems = null;
-		try {
-			cartItems = cartItemDAO.getCartItemsByUserId(userId);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for(CartItem cart: cartItems) {
-			System.out.println("this is quantity" +cart.getQuantity());
-			System.out.println("this is image" +cart.getProduct().getImage());
-			System.out.println("this is product price" +cart.getProduct().getPrice());
-			System.out.println("this is product name" +cart.getProduct().getName());
-		}
-		
-		
+
+        try {
+            cartItems = cartItemDAO.getCartItemsByUserId(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         request.setAttribute("cartItems", cartItems);
+
+        // Retrieve and clear flash message
+        String message = (String) session.getAttribute("message");
+        if (message != null) {
+            request.setAttribute("message", message);
+            session.removeAttribute("message");
+        }
+
         request.getRequestDispatcher("/views/cart.jsp").forward(request, response);
     }
 
-
+    // POST: Add to cart
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,27 +66,30 @@ public class CartServlet extends HttpServlet {
         int userId = currentUser.getUserId();
         int productId = Integer.parseInt(request.getParameter("productId"));
         int quantity = 1;
+
         try {
-            quantity = Integer.parseInt(request.getParameter("quantity"));
+            if (request.getParameter("quantity") != null) {
+                quantity = Integer.parseInt(request.getParameter("quantity"));
+            }
         } catch (NumberFormatException e) {
-            // default quantity is 1
+            // default to 1
         }
 
         CartItemDAO cartItemDAO = new CartItemDAO();
         boolean success = false;
-		try {
-			success = cartItemDAO.addToCart(userId, productId, quantity);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-        if (success) {
-            request.setAttribute("message", "Product added to cart.");
-        } else {
-            request.setAttribute("message", "Failed to add product to cart.");
+        try {
+            success = cartItemDAO.addToCart(userId, productId, quantity);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        request.getRequestDispatcher("/views/cart.jsp").forward(request, response);
+        if (success) {
+            session.setAttribute("message", "Product added to cart.");
+        } else {
+            session.setAttribute("message", "Failed to add product to cart.");
+        }
+
+        response.sendRedirect(request.getContextPath() + "/cart");
     }
 }

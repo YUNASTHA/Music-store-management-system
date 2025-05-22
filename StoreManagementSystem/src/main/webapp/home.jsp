@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -95,8 +96,10 @@
             background-color: #111;
             color: #fff;
         }
-        .container{
-        margin-bottom:40px}
+
+        .container {
+            margin-bottom: 40px;
+        }
     </style>
 </head>
 <body>
@@ -115,46 +118,30 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Featured Products</h2>
-        <a href="#" class="text-decoration-none fw-bold">View All →</a>
+        <a href="product" class="text-decoration-none fw-bold">View All →</a>
     </div>
     <div class="row row-cols-1 row-cols-md-4 g-4">
-        <div class="col">
-            <div class="product-card">
-                <div class="product-image"></div>
-                <div class="product-title">Acoustic Guitar</div>
-                <div class="fw-bold mt-2">Rs.299.99</div>
-                <button class="btn view-button mt-2">View Details</button>
+        <!-- Loop through the first 4 products -->
+        <c:forEach var="product" items="${productList}">
+            <div class="col">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://vintageguitarsrus.com/cdn/shop/products/V130VSB_1_a5458a25-dde8-4434-acd2-ad809e33aa99.jpg?v=1643976842" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                    </div>
+                    <div class="product-title">${product.name}</div>
+                    <div class="fw-bold mt-2">Rs.${product.price}</div>
+                    <form method="get" action="productDetails.jsp">
+                        <input type="hidden" name="productId" value="${product.productId}">
+                        <a href="${pageContext.request.contextPath}/product?action=view&id=${product.productId}" class="btn btn-dark">View Details</a>
+                        
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="product-card">
-                <div class="product-image"></div>
-                <div class="product-title">Electric Keyboard</div>
-                <div class="fw-bold mt-2">Rs.499.99</div>
-                <button class="btn view-button mt-2">View Details</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="product-card">
-                <div class="product-image"></div>
-                <div class="product-title">Professional Microphone</div>
-                <div class="fw-bold mt-2">Rs.149.99</div>
-                <button class="btn view-button mt-2">View Details</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="product-card">
-                <div class="product-image"></div>
-                <div class="product-title">Drum Set</div>
-                <div class="fw-bold mt-2">Rs.799.99</div>
-                <button class="btn view-button mt-2">View Details</button>
-            </div>
-        </div>
+        </c:forEach>
     </div>
 </div>
 
 <%@ include file="footer.jsp" %>
-
 
 </body>
 </html>

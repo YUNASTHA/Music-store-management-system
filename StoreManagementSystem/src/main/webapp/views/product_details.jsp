@@ -1,10 +1,11 @@
 <%@ page session="true" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Guitar - Product Details</title>
+    <title>${product.name} - Product Details</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -36,6 +37,13 @@
             align-items: center;
         }
 
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
         .product-details {
             flex: 1;
         }
@@ -44,13 +52,6 @@
             font-size: 36px;
             margin-bottom: 10px;
             color: #111827;
-        }
-
-        .product-price {
-            font-size: 28px;
-            font-weight: 700;
-            margin: 16px 0;
-            color: #dc6a23;
         }
 
         .shipping-info {
@@ -76,6 +77,12 @@
             font-size: 16px;
             margin: 0 5px;
             border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .quantity button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .stock {
@@ -103,12 +110,6 @@
             color: white;
         }
 
-        .btn-wishlist {
-            background-color: transparent;
-            border: 1px solid #9ca3af;
-            color: #111827;
-        }
-
         .tab-content {
             font-size: 15px;
             color: #374151;
@@ -126,42 +127,79 @@
 </head>
 <body>
 
+<%@ include file="../navbar.jsp" %>
+
 <div class="product-container">
     <div class="product-image">
-        <i class="fa fa-image fa-3x" style="color: #9ca3af;"></i>
+        <c:choose>
+            <c:when test="${not empty product.image}">
+                <img src="https://vintageguitarsrus.com/cdn/shop/products/V130VSB_1_a5458a25-dde8-4434-acd2-ad809e33aa99.jpg?v=1643976842" alt="${product.name}" />
+            </c:when>
+            <c:otherwise>
+                <i class="fa fa-image fa-3x" style="color: #9ca3af;"></i>
+            </c:otherwise>
+        </c:choose>
     </div>
 
     <div class="product-details">
-        <h1>Product Name</h1>
-        <div class="product-price">$299.99</div>
+        <h1>${product.name}</h1>
 
         <div class="shipping-info">
-            <i class="fa fa-truck"></i> Free shipping on orders over $50
+            <i class="fa fa-truck"></i> Free shipping
         </div>
 
         <div class="quantity">
             <label>Quantity:</label>
-            <button>-</button>
-            <span>1</span>
-            <button>+</button>
-            <span class="stock">15 in stock</span>
+            <button type="button" onclick="decreaseQty()">-</button>
+            <span id="quantity-value">1</span>
+            <button type="button" onclick="increaseQty()">+</button>
+            <span class="stock">${product.stock} in stock</span>
         </div>
 
+        <!-- Hidden quantity input -->
+        <input type="hidden" name="quantity" id="quantity-input" form="addToCartForm" value="1" />
+
         <div class="actions">
-            <button class="btn btn-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+            <form id="addToCartForm" action="${pageContext.request.contextPath}/cart" method="post">
+                <input type="hidden" name="productId" value="${product.productId}" />
+                <button type="submit" class="btn btn-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+            </form>
         </div>
 
         <div class="tab-content">
-            <ul class="features">
-                <li>Solid spruce top</li>
-                <li>Mahogany back and sides</li>
-                <li>Rosewood fingerboard</li>
-                <li>Die-cast tuners</li>
-                <li>Natural finish</li>
-            </ul>
+            <c:if test="${not empty product.description}">
+                <p>${product.description}</p>
+            </c:if>
         </div>
     </div>
 </div>
+
+<!-- JavaScript to handle quantity -->
+<script>
+    let quantity = 1;
+    const maxStock = ${product.stock};
+    const quantityDisplay = document.getElementById("quantity-value");
+    const quantityInput = document.getElementById("quantity-input");
+
+    function increaseQty() {
+        if (quantity < maxStock) {
+            quantity++;
+            updateQty();
+        }
+    }
+
+    function decreaseQty() {
+        if (quantity > 1) {
+            quantity--;
+            updateQty();
+        }
+    }
+
+    function updateQty() {
+        quantityDisplay.textContent = quantity;
+        quantityInput.value = quantity;
+    }
+</script>
 
 </body>
 </html>

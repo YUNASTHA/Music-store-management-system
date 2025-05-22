@@ -1,6 +1,7 @@
 package com.store.dao;
 
 import com.store.model.Order;
+import com.store.model.OrderItem;
 import com.store.util.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -124,6 +125,36 @@ public class OrderDAO {
 	 
 	 
 		
-	 
+
+	 public List<OrderItem> getOrderItems(int orderId) throws Exception {
+		    List<OrderItem> items = new ArrayList<>();
+		    String sql = "SELECT oi.product_id, oi.quantity, p.name, p.price " +
+		                 "FROM order_items oi " +
+		                 "JOIN products p ON oi.product_id = p.product_id " +
+		                 "WHERE oi.order_id = ?";
+
+		    try (Connection conn = DBUtil.getConnection();
+		         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+		        stmt.setInt(1, orderId);
+		        ResultSet rs = stmt.executeQuery();
+
+		        while (rs.next()) {
+		            OrderItem item = new OrderItem();
+		            item.setProductId(rs.getInt("product_id"));
+		            item.setQuantity(rs.getInt("quantity"));
+		            item.setProductName(rs.getString("name"));
+		            item.setProductPrice(rs.getFloat("price"));
+		            items.add(item);
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace(); // Replace with proper logging in production
+		        throw e;
+		    }
+
+		    return items;
+		}
+
+
 	 
 }

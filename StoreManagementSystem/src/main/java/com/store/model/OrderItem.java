@@ -7,6 +7,10 @@ public class OrderItem {
     private int quantity;
     private double price;
     
+    private String productName;   // Product name
+    private float productPrice;   // Product price
+
+    
     public OrderItem() {}
 
     public OrderItem(int orderItemId, int orderId, int productId, int quantity, double price) {
@@ -15,6 +19,7 @@ public class OrderItem {
         this.productId = productId;
         this.quantity = quantity;
         this.price = price;
+        
     }
     public int getOrderItemId() {
         return orderItemId;
@@ -55,4 +60,22 @@ public class OrderItem {
         this.price = price;
     }
 
+    
+ // Getters and setters for productName
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    // Getters and setters for productPrice
+    public float getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(float productPrice) {
+        this.productPrice = productPrice;
+    }
 }
